@@ -4,7 +4,7 @@ const ProtectedRoutesComponent = ({ admin }) => {
   let auth = false;
 
   if (admin) {
-    let adminAuth = false;
+    let adminAuth = true;
     if (adminAuth) auth = true;
   } else {
     let userAuth = true;
