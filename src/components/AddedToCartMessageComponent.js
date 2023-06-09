@@ -13,7 +13,7 @@ const AddedToCartMessageComponent = () => {
     >
       <Alert.Heading>The product was added to your cart!</Alert.Heading>
       <p>
-        <Button variant="success">Go back</Button>{" "}
+        <Button variant="success">Go back</Button>
         <Link to="/cart">
           <Button variant="danger">Go to cart</Button>
         </Link>
