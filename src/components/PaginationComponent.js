@@ -1,12 +1,8 @@
 import { Pagination } from "react-bootstrap";
 
 const PaginationComponent = () => {
-  const paginationStyle = {
-    paddingBottom: "170px",
-  };
-
   return (
-    <Pagination style={paginationStyle}>
+    <Pagination>
       <Pagination.Prev />
       <Pagination.Item>{1}</Pagination.Item>
 
