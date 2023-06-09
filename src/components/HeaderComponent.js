@@ -1,14 +1,14 @@
 import {
-  Badge,
-  Container,
-  Nav,
-  NavDropdown,
   Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Badge,
   Form,
+  DropdownButton,
   Dropdown,
   Button,
   InputGroup,
-  DropdownButton,
 } from "react-bootstrap";
 
 import { LinkContainer } from "react-router-bootstrap";
@@ -19,7 +19,7 @@ const HeaderComponent = () => {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand>Dino Shop</Navbar.Brand>
+          <Navbar.Brand href="/">BEST ONLINE SHOP</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -32,7 +32,7 @@ const HeaderComponent = () => {
               </DropdownButton>
               <Form.Control type="text" placeholder="Search in shop ..." />
               <Button variant="warning">
-                <i className="bi bi-search"></i>
+                <i className="bi bi-search text-dark"></i>
               </Button>
             </InputGroup>
           </Nav>
@@ -40,30 +40,31 @@ const HeaderComponent = () => {
             <LinkContainer to="/admin/orders">
               <Nav.Link>
                 Admin
-                <span
-                  className="position-absolute top-1 start-1o translate-middle
-                p-2 bg-danger border border-light rounded-circle"
-                ></span>
+                <span className="position-absolute top-1 start-10 translate-middle p-2 bg-danger border border-light rounded-circle"></span>
               </Nav.Link>
             </LinkContainer>
+
             <NavDropdown title="John Doe" id="collasible-nav-dropdown">
-              <NavDropdown.Item eventKey="/user/my-orders" as={Link}>
+              <NavDropdown.Item
+                eventKey="/user/my-orders"
+                as={Link}
+                to="/user/my-orders"
+              >
                 My orders
               </NavDropdown.Item>
-              <NavDropdown.Item eventKey="/user" as={Link}>
+              <NavDropdown.Item eventKey="/user" as={Link} to="/user">
                 My profile
               </NavDropdown.Item>
               <NavDropdown.Item>Logout</NavDropdown.Item>
             </NavDropdown>
             <LinkContainer to="/login">
               <Nav.Link>Login</Nav.Link>
-            </LinkContainer>{" "}
+            </LinkContainer>
             <LinkContainer to="/register">
               <Nav.Link>Register</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/cart">
               <Nav.Link>
-                {" "}
                 <Badge pill bg="danger">
                   2
                 </Badge>
