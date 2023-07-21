@@ -16,7 +16,7 @@ const OrdersPageComponent = ({ getOrders }) => {
             : er?.response?.data
         )
       );
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Row className="m-5">
