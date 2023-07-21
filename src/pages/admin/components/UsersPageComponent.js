@@ -2,18 +2,30 @@ import { Row, Col, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
-const deleteHandler = () => {
-  if (window.confirm("Are you sure?")) alert("User deleted!");
-};
+import { useState, useEffect } from "react";
 
 const UsersPageComponent = () => {
+  const [counter, setCounter] = useState(0);
+
+  const deleteHandler = () => {
+    setCounter(counter + 1);
+    // if (window.confirm("Are you sure?")) alert("User deleted!");
+  };
+
+  useEffect(() => {
+    console.log("useEffect called");
+    setCounter(counter + 1);
+    return () => console.log("cleanup the effect");
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Row className="m-5">
       <Col md={2}>
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-        <h1>User List</h1>
+        <h1>User List {counter}</h1>
+        {console.log("HTML rendered")}
         <Table striped bordered hover responsive>
           <thead>
             <tr>
