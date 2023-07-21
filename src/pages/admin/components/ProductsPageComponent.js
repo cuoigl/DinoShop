@@ -4,23 +4,16 @@ import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
 import { useState, useEffect } from "react";
 
-const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
-  const [users, setUsers] = useState([]);
-  const [userDeleted, setUserDeleted] = useState(false);
-
-  const deleteHandler = async (userId) => {
-    if (window.confirm("Are you sure?")) {
-      const data = await deleteUser(userId);
-      if (data === "user removed") {
-        setUserDeleted(!userDeleted);
-      }
-    }
-  };
+const deleteHandler = () => {
+  if (window.confirm("Are you sure?")) alert("Product deleted!");
+};
+const ProductsPageComponent = ({ fetchProducts }) => {
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const abctrl = new AbortController();
-    fetchUsers(abctrl)
-      .then((res) => setUsers(res))
+    fetchProducts(abctrl)
+      .then((res) => setProducts(res))
       .catch((er) =>
         console.log(
           er?.response?.data?.message
@@ -29,7 +22,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
         )
       );
     return () => abctrl.abort();
-  }, [userDeleted]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Row className="m-5">
@@ -37,34 +30,33 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-        <h1>User List</h1>
+        <h1>
+          Product List{" "}
+          <LinkContainer to="/admin/create-new-product">
+            <Button variant="primary" size="lg">
+              Create new
+            </Button>
+          </LinkContainer>
+        </h1>
         <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Is Admin</th>
+              <th>Product Name</th>
+              <th>Price</th>
+              <th>Category</th>
               <th>Edit/Delete</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, idx) => (
+            {products.map((item, idx) => (
               <tr key={idx}>
                 <td>{idx + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.lastName}</td>
-                <td>{user.email}</td>
+                <td>{item.name}</td>
+                <td>{item.price}</td>
+                <td>{item.category}</td>
                 <td>
-                  {user.isAdmin ? (
-                    <i className="bi bi-check-lg text-success"></i>
-                  ) : (
-                    <i className="bi bi-x-lg text-danger"></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/admin/edit-user/${user._id}`}>
+                  <LinkContainer to={`/admin/edit-product/${item._id}`}>
                     <Button className="btn-sm">
                       <i className="bi bi-pencil-square"></i>
                     </Button>
@@ -73,7 +65,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => deleteHandler(user._id)}
+                    onClick={deleteHandler}
                   >
                     <i className="bi bi-x-circle"></i>
                   </Button>
@@ -87,4 +79,4 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
   );
 };
 
-export default UsersPageComponent;
+export default ProductsPageComponent;
