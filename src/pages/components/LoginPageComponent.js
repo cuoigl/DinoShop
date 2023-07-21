@@ -1,7 +1,8 @@
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
+
 const LoginPageComponent = ({ loginUserApiRequest }) => {
   const [validated, setValidated] = useState(false);
   const [loginUserResponseState, setLoginUserResponseState] = useState({
@@ -9,6 +10,8 @@ const LoginPageComponent = ({ loginUserApiRequest }) => {
     error: "",
     loading: false,
   });
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,6 +31,10 @@ const LoginPageComponent = ({ loginUserApiRequest }) => {
             loading: false,
             error: "",
           });
+
+          if (res.success === "user logged in" && !res.userLoggedIn.isAdmin)
+            navigate("/user", { replace: true });
+          else navigate("/admin/orders", { replace: true });
         })
         .catch((er) =>
           setLoginUserResponseState({
@@ -40,6 +47,7 @@ const LoginPageComponent = ({ loginUserApiRequest }) => {
 
     setValidated(true);
   };
+
   return (
     <Container>
       <Row className="mt-5 justify-content-md-center">
