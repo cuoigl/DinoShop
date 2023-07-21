@@ -8,8 +8,16 @@ const fetchUsers = async (abctrl) => {
   });
   return data;
 };
+
+const deleteUser = async (userId) => {
+  const { data } = await axios.delete(
+    `http://localhost:3000/api/users/${userId}`
+  );
+  return data;
+};
+
 const AdminUsersPage = () => {
-  return <UsersPageComponent fetchUsers={fetchUsers} />;
+  return <UsersPageComponent fetchUsers={fetchUsers} deleteUser={deleteUser} />;
 };
 
 export default AdminUsersPage;
