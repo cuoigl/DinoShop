@@ -1,20 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // components:
-import ProtectedRoutesComponent from "./components/ProtectedRoutesComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
 
-// user components:
+//user components:
 import RoutesWithUserChatComponent from "./components/user/RoutesWithUserChatComponent";
 
 // publicly available pages:
 import HomePage from "./pages/HomePage";
-import CartPage from "./pages/CartPage";
-import ProductListPage from "./pages/ProductListPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
-import RegisterPage from "./pages/RegisterPage";
+import ProductListPage from "./pages/ProductListPage";
+import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+
+import ProtectedRoutesComponent from "./components/ProtectedRoutesComponent";
 
 // protected user pages:
 import UserProfilePage from "./pages/user/UserProfilePage";
@@ -32,7 +33,6 @@ import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminOrderDetailsPage from "./pages/admin/AdminOrderDetailsPage";
 import AdminChatsPage from "./pages/admin/AdminChatsPage";
 import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
-
 import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
@@ -52,7 +52,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element="Page not exists 404" />
         </Route>
-        {/* <Route path="/" component={HomePage} /> in previous versions of react-router-dom > */}
+        {/* <Route path="/" component={HomePage} />  in previous versions of react-router-dom */}
 
         {/* user protected routes: */}
         <Route element={<ProtectedRoutesComponent admin={false} />}>
@@ -80,7 +80,7 @@ function App() {
           />
           <Route path="/admin/orders" element={<AdminOrdersPage />} />
           <Route
-            path="/admin/order-details"
+            path="/admin/order-details/:id"
             element={<AdminOrderDetailsPage />}
           />
           <Route path="/admin/chats" element={<AdminChatsPage />} />
