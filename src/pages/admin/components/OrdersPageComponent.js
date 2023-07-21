@@ -11,7 +11,9 @@ const OrdersPageComponent = ({ getOrders }) => {
       .then((orders) => setOrders(orders))
       .catch((er) =>
         console.log(
-          er.response.data.message ? er.response.data.message : er.response.data
+          er?.response?.data?.message
+            ? er?.response?.data?.message
+            : er?.response?.data
         )
       );
   }, []);
