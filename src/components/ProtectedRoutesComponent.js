@@ -14,7 +14,6 @@ const ProtectedRoutesComponent = ({ admin }) => {
       .then(function (data) {
         if (data.data.token) {
           setIsAuth(data.data.token);
-          console.log(data.data.token);
         }
         return isAuth;
       });
