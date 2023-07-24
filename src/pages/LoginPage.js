@@ -4,11 +4,15 @@ import { useDispatch } from "react-redux";
 import { setReduxUserState } from "../redux/actions/userActions";
 
 const loginUserApiRequest = async (email, password, doNotLogout) => {
-  const { data } = await axios.post("http://localhost:3000/api/users/login", {
-    email,
-    password,
-    doNotLogout,
-  });
+  const { data } = await axios.post(
+    "http://localhost:3000/api/users/login",
+    {
+      email,
+      password,
+      doNotLogout,
+    },
+    { headers: { "Content-Type": "application/json" }, withCredentials: true }
+  );
   if (data.userLoggedIn.doNotLogout)
     localStorage.setItem("userInfo", JSON.stringify(data.userLoggedIn));
   else sessionStorage.setItem("userInfo", JSON.stringify(data.userLoggedIn));
