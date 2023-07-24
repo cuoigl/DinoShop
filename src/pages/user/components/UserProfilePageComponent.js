@@ -23,7 +23,7 @@ const UserProfilePageComponent = ({
     fetchUser(userInfo._id)
       .then((data) => setUser(data))
       .catch((er) => console.log(er));
-  }, [userInfo._id]);
+  }, [userInfo._id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onChange = () => {
     const password = document.querySelector("input[name=password]");

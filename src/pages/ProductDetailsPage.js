@@ -1,5 +1,4 @@
 import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
-import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 

@@ -16,7 +16,7 @@ const ProductListPageComponent = ({ getProducts }) => {
     getProducts()
       .then((products) => setProducts(products.products))
       .catch((er) => console.log(er));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container fluid>
