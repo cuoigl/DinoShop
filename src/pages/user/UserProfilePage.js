@@ -14,17 +14,21 @@ const updateUserApiRequest = async (
   state,
   password
 ) => {
-  const { data } = await axios.put("http://localhost:3000/api/users/profile", {
-    name,
-    lastName,
-    phoneNumber,
-    address,
-    country,
-    zipCode,
-    city,
-    state,
-    password,
-  });
+  const { data } = await axios.put(
+    "http://localhost:3000/api/users/profile",
+    {
+      name,
+      lastName,
+      phoneNumber,
+      address,
+      country,
+      zipCode,
+      city,
+      state,
+      password,
+    },
+    { withCredentials: true }
+  );
   return data;
 };
 
