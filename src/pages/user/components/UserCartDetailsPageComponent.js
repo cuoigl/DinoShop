@@ -24,6 +24,7 @@ const UserCartDetailsPageComponent = ({
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [userAddress, setUserAddress] = useState(false);
   const [missingAddress, setMissingAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("pp");
 
   const changeCount = (productID, count) => {
     reduxDispatch(addToCart(productID, count));
@@ -68,6 +69,32 @@ const UserCartDetailsPageComponent = ({
         )
       );
   }, [userInfo._id]);
+
+  const orderHandler = () => {
+    const orderData = {
+      orderTotal: {
+        itemsCount: itemsCount,
+        cartSubtotal: cartSubtotal,
+      },
+      cartItems: cartItems.map((item) => {
+        return {
+          productID: item.productID,
+          name: item.name,
+          price: item.price,
+          image: { path: item.image ? item.image.path ?? null : null },
+          quantity: item.quantity,
+          count: item.count,
+        };
+      }),
+      paymentMethod: paymentMethod,
+    };
+    console.log(orderData);
+  };
+
+  const choosePayment = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -84,7 +111,7 @@ const UserCartDetailsPageComponent = ({
             </Col>
             <Col md={6}>
               <h2>Payment method</h2>
-              <Form.Select>
+              <Form.Select onChange={choosePayment}>
                 <option value="pp">PayPal</option>
                 <option value="cod">
                   Cash On Delivery (delivery may be delayed)
@@ -140,11 +167,12 @@ const UserCartDetailsPageComponent = ({
               <div className="d-grid gap-2">
                 <Button
                   size="lg"
+                  onClick={orderHandler}
                   variant="danger"
                   type="button"
                   disabled={buttonDisabled}
                 >
-                  Pay for the order
+                  Place order
                 </Button>
               </div>
             </ListGroup.Item>
