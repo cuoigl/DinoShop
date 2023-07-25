@@ -14,11 +14,15 @@ export const getCategories = () => async (dispatch) => {
 
 export const saveAttributeToCatDoc =
   (key, val, categoryChoosen) => async (dispatch, getState) => {
-    const { data } = await axios.post("/api/categories/attr", {
-      key,
-      val,
-      categoryChoosen,
-    });
+    const { data } = await axios.post(
+      "http://localhost:3000/api/categories/attr",
+      {
+        key,
+        val,
+        categoryChoosen,
+      },
+      { withCredentials: true }
+    );
     if (data.categoryUpdated) {
       dispatch({
         type: actionTypes.SAVE_ATTR,

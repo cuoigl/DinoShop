@@ -44,10 +44,18 @@ const AdminEditProductPage = () => {
 
   const imageDeleteHandler = async (imagePath, productId) => {
     let encoded = encodeURIComponent(imagePath);
-    await axios.delete(
-      `http://localhost:3000/api/products/admin/image/${encoded}/${productId}`,
-      { withCredentials: true }
-    );
+    if (process.env.NODE_ENV === "production") {
+      // to do: change to !==
+      await axios.delete(
+        `http://localhost:3000/api/products/admin/image/${encoded}/${productId}`,
+        { withCredentials: true }
+      );
+    } else {
+      await axios.delete(
+        `http://localhost:3000/api/products/admin/image/${encoded}/${productId}?cloudinary=true`,
+        { withCredentials: true }
+      );
+    }
   };
 
   return (
