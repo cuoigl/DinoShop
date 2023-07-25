@@ -8,8 +8,36 @@ import {
   Button,
 } from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-const UserOrderDetailsPageComponent = ({ userInfo }) => {
+const UserOrderDetailsPageComponent = ({ userInfo, getUser, getOrder }) => {
+  const [userAddress, setUserAddress] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    getUser()
+      .then((data) => {
+        setUserAddress({
+          address: data.address,
+          city: data.city,
+          country: data.country,
+          zipCode: data.zipCode,
+          state: data.state,
+          phoneNumber: data.phoneNumber,
+        });
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    getOrder(id)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <Container fluid>
       <Row className="mt-4">
@@ -20,8 +48,9 @@ const UserOrderDetailsPageComponent = ({ userInfo }) => {
             <Col md={6}>
               <h2>Shipping</h2>
               <b>Name</b>: {userInfo.name} {userInfo.lastName} <br />
-              <b>Address</b>: 8739 Mayflower St. Los Angeles, CA 90063 <br />
-              <b>Phone</b>: 888 777 666
+              <b>Address</b>: {userAddress.address} {userAddress.city}{" "}
+              {userAddress.state} {userAddress.zipCode} <br />
+              <b>Phone</b>: {userAddress.phoneNumber}
             </Col>
             <Col md={6}>
               <h2>Payment method</h2>

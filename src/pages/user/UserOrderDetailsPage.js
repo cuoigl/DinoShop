@@ -2,6 +2,14 @@ import UserOrderDetailsPageComponent from "./components/UserOrderDetailsPageComp
 import { useSelector } from "react-redux";
 import axios from "axios";
 
+const getOrder = async (orderId) => {
+  const { data } = await axios.get(
+    "http://localhost:3000/api/orders/user/" + orderId,
+    { withCredentials: true }
+  );
+  return data;
+};
+
 const UserOrderDetailsPage = () => {
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
 
@@ -14,7 +22,11 @@ const UserOrderDetailsPage = () => {
   };
 
   return (
-    <UserOrderDetailsPageComponent userInfo={userInfo} getUser={getUser} />
+    <UserOrderDetailsPageComponent
+      userInfo={userInfo}
+      getUser={getUser}
+      getOrder={getOrder}
+    />
   );
 };
 
