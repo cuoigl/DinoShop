@@ -22,11 +22,32 @@ const uploadImagesApiRequest = async (images, productId) => {
   );
 };
 
+const uploadImagesCloudinaryApiRequest = (images) => {
+  const url = "https://api.cloudinary.com/v1_1/jkhbnc-366gs/image/upload";
+  const formData = new FormData();
+  for (let i = 0; i < images.length; i++) {
+    let file = images[i];
+    formData.append("file", file);
+    formData.append("upload_preset", "acsijtdn");
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }
+};
+
 const AdminCreateProductPage = () => {
   return (
     <CreateProductPageComponent
       createProductApiRequest={createProductApiRequest}
       uploadImagesApiRequest={uploadImagesApiRequest}
+      uploadImagesCloudinaryApiRequest={uploadImagesCloudinaryApiRequest}
     />
   );
 };
