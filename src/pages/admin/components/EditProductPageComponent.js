@@ -26,6 +26,9 @@ const EditProductPageComponent = ({
   categories,
   fetchProduct,
   updateProductApiRequest,
+  reduxDispatch,
+  saveAttributeToCatDoc,
+  imageDeleteHandler,
 }) => {
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({});
@@ -38,6 +41,7 @@ const EditProductPageComponent = ({
   const [categoryChoosen, setCategoryChoosen] = useState("Choose category");
   const [newAttrKey, setNewAttrKey] = useState(false);
   const [newAttrValue, setNewAttrValue] = useState(false);
+  const [imageRemoved, setImageRemoved] = useState(false);
 
   const attrVal = useRef(null);
   const attrKey = useRef(null);
@@ -71,7 +75,7 @@ const EditProductPageComponent = ({
     fetchProduct(id)
       .then((product) => setProduct(product))
       .catch((er) => console.log(er));
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, imageRemoved]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -124,7 +128,7 @@ const EditProductPageComponent = ({
     }
     setCategoryChoosen(product.category);
     setAttributesTable(product.attrs);
-  }, [product]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [product]);
 
   const changeCategory = (e) => {
     const highLevelCategory = e.target.value.split("/")[0];
@@ -189,6 +193,9 @@ const EditProductPageComponent = ({
   const addNewAttributeManually = (e) => {
     if (e.keyCode && e.keyCode === 13) {
       if (newAttrKey && newAttrValue) {
+        reduxDispatch(
+          saveAttributeToCatDoc(newAttrKey, newAttrValue, categoryChoosen)
+        );
         setAttributesTableWrapper(newAttrKey, newAttrValue);
         e.target.value = "";
         createNewAttrKey.current.value = "";
@@ -395,7 +402,15 @@ const EditProductPageComponent = ({
                         src={image.path ?? null}
                         fluid
                       />
-                      <i style={onHover} className="bi bi-x text-danger"></i>
+                      <i
+                        style={onHover}
+                        onClick={() =>
+                          imageDeleteHandler(image.path, id).then((data) =>
+                            setImageRemoved(!imageRemoved)
+                          )
+                        }
+                        className="bi bi-x text-danger"
+                      ></i>
                     </Col>
                   ))}
               </Row>

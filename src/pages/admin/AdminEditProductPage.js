@@ -29,6 +29,14 @@ const AdminEditProductPage = () => {
 
   const reduxDispatch = useDispatch();
 
+  const imageDeleteHandler = async (imagePath, productId) => {
+    let encoded = encodeURIComponent(imagePath);
+    await axios.delete(
+      `http://localhost:3000/api/products/admin/image/${encoded}/${productId}`,
+      { withCredentials: true }
+    );
+  };
+
   return (
     <EditProductPageComponent
       categories={categories}
@@ -36,8 +44,8 @@ const AdminEditProductPage = () => {
       updateProductApiRequest={updateProductApiRequest}
       reduxDispatch={reduxDispatch}
       saveAttributeToCatDoc={saveAttributeToCatDoc}
+      imageDeleteHandler={imageDeleteHandler}
     />
   );
 };
-
 export default AdminEditProductPage;
