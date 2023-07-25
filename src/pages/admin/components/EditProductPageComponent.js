@@ -71,7 +71,7 @@ const EditProductPageComponent = ({
     fetchProduct(id)
       .then((product) => setProduct(product))
       .catch((er) => console.log(er));
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -124,7 +124,7 @@ const EditProductPageComponent = ({
     }
     setCategoryChoosen(product.category);
     setAttributesTable(product.attrs);
-  }, [product]);
+  }, [product]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const changeCategory = (e) => {
     const highLevelCategory = e.target.value.split("/")[0];
