@@ -5,10 +5,10 @@ import axios from "axios";
 const fetchUsers = async (abctrl) => {
   const { data } = await axios.get(
     "http://localhost:3000/api/users",
+    { withCredentials: true },
     {
       signal: abctrl.signal,
-    },
-    { withCredentials: true }
+    }
   );
   return data;
 };
