@@ -1,6 +1,6 @@
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
 const LoginPageComponent = ({
@@ -14,8 +14,6 @@ const LoginPageComponent = ({
     error: "",
     loading: false,
   });
-
-  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -41,8 +39,8 @@ const LoginPageComponent = ({
           }
 
           if (res.success === "user logged in" && !res.userLoggedIn.isAdmin)
-            navigate("/user", { replace: true });
-          else navigate("/admin/orders", { replace: true });
+            window.location.assign("/user");
+          else window.location.assign("/admin/orders");
         })
         .catch((er) =>
           setLoginUserResponseState({

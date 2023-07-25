@@ -10,7 +10,10 @@ const ProtectedRoutesComponent = ({ admin }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/get-token", { withCredentials: true })
+      .get("http://localhost:3000/api/get-token", {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
       .then(function (data) {
         if (data.data.token) {
           setIsAuth(data.data.token);

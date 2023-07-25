@@ -43,7 +43,7 @@ const UserOrderDetailsPageComponent = ({
         });
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     getOrder(id)
@@ -68,7 +68,7 @@ const UserOrderDetailsPageComponent = ({
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const orderHandler = () => {
     setButtonDisabled(true);

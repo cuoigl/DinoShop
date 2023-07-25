@@ -9,7 +9,7 @@ const UserOrdersPageComponent = ({ getOrders }) => {
     getOrders()
       .then((orders) => setOrders(orders))
       .catch((er) => console.log(er));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Row className="m-5">

@@ -11,8 +11,9 @@ const loginUserApiRequest = async (email, password, doNotLogout) => {
       password,
       doNotLogout,
     },
-    { headers: { "Content-Type": "application/json" }, withCredentials: true }
+    { withCredentials: true }
   );
+
   if (data.userLoggedIn.doNotLogout)
     localStorage.setItem("userInfo", JSON.stringify(data.userLoggedIn));
   else sessionStorage.setItem("userInfo", JSON.stringify(data.userLoggedIn));
