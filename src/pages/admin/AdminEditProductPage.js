@@ -11,9 +11,15 @@ const fetchProduct = async (productId) => {
   return data;
 };
 
-const updateProductApiRequest = (productId, formInputs) => {
-  console.log(productId);
-  console.log(formInputs);
+const updateProductApiRequest = async (productId, formInputs) => {
+  const { data } = await axios.put(
+    `http://localhost:3000/api/products/admin/${productId}`,
+    {
+      ...formInputs,
+    },
+    { withCredentials: true }
+  );
+  return data;
 };
 
 const AdminEditProductPage = () => {
