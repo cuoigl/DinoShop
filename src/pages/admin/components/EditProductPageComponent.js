@@ -10,7 +10,8 @@ import {
   Image,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const onHover = {
   cursor: "pointer",
@@ -20,8 +21,15 @@ const onHover = {
   transform: "scale(2.7)",
 };
 
-const EditProductPageComponent = ({ categories }) => {
+const EditProductPageComponent = ({ categories, fetchProduct }) => {
   const [validated, setValidated] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetchProduct(id)
+      .then((product) => console.log(product))
+      .catch((er) => console.log(er));
+  }, []);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
