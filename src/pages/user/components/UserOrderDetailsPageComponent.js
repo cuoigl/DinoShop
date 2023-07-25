@@ -15,7 +15,7 @@ const UserOrderDetailsPageComponent = ({
   userInfo,
   getUser,
   getOrder,
-  loadScript,
+  loadPayPalScript,
 }) => {
   const [userAddress, setUserAddress] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -77,16 +77,7 @@ const UserOrderDetailsPageComponent = ({
         "To pay for your order click one of the buttons below"
       );
       if (!isPaid) {
-        loadScript({
-          "client-id":
-            "AVfG0d6HdLo-SC8lJQ0BcCxbC2IPGLp21sLzqZKdMzLZH8udpU-HM71FwS7N_OgfRqHLS2hkm5nky1hf",
-        })
-          .then((paypal) => {
-            paypal.Buttons({}).render("#paypal-container-element");
-          })
-          .catch((err) => {
-            console.error("failed to load the PayPal JS SDK script", err);
-          });
+        loadPayPalScript();
       }
     } else {
       setOrderButtonMessage("Your order was placed. Thank you");
