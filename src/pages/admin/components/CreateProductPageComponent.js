@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateProductPageComponent = ({
   createProductApiRequest,
@@ -17,6 +18,14 @@ const CreateProductPageComponent = ({
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
+  const [images, setImages] = useState(false);
+  const [isCreating, setIsCreating] = useState("");
+  const [createProductResponseState, setCreateProductResponseState] = useState({
+    message: "",
+    error: "",
+  });
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,19 +42,35 @@ const CreateProductPageComponent = ({
     if (event.currentTarget.checkValidity() === true) {
       createProductApiRequest(formInputs)
         .then((data) => {
-          console.log(data);
+          if (images) {
+            uploadImagesApiRequest(images, data.productId)
+              .then((res) => {})
+              .catch((er) =>
+                setIsCreating(
+                  er.response.data.message
+                    ? er.response.data.message
+                    : er.response.data
+                )
+              );
+          }
+          if (data.message === "product created") navigate("/admin/products");
         })
         .catch((er) => {
-          console.log(
-            er.response.data.message
+          setCreateProductResponseState({
+            error: er.response.data.message
               ? er.response.data.message
-              : er.response.data
-          );
+              : er.response.data,
+          });
         });
     }
 
     setValidated(true);
   };
+
+  const uploadHandler = (images) => {
+    setImages(images);
+  };
+
   return (
     <Container>
       <Row className="justify-content-md-center mt-5">
@@ -193,11 +218,18 @@ const CreateProductPageComponent = ({
             <Form.Group controlId="formFileMultiple" className="mb-3 mt-3">
               <Form.Label>Images</Form.Label>
 
-              <Form.Control required type="file" multiple />
+              <Form.Control
+                required
+                type="file"
+                multiple
+                onChange={(e) => uploadHandler(e.target.files)}
+              />
+              {isCreating}
             </Form.Group>
             <Button variant="primary" type="submit">
               Create
             </Button>
+            {createProductResponseState.error ?? ""}
           </Form>
         </Col>
       </Row>
