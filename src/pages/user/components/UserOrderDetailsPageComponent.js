@@ -77,7 +77,7 @@ const UserOrderDetailsPageComponent = ({
         "To pay for your order click one of the buttons below"
       );
       if (!isPaid) {
-        loadPayPalScript();
+        loadPayPalScript(cartSubtotal, cartItems);
       }
     } else {
       setOrderButtonMessage("Your order was placed. Thank you");
