@@ -12,14 +12,21 @@ const getOrder = async (orderId) => {
   return data;
 };
 
-const loadPayPalScript = (cartSubtotal, cartItems) => {
+const loadPayPalScript = (
+  cartSubtotal,
+  cartItems,
+  orderId,
+  updateStateAfterOrder
+) => {
   loadScript({
     "client-id":
       "AVfG0d6HdLo-SC8lJQ0BcCxbC2IPGLp21sLzqZKdMzLZH8udpU-HM71FwS7N_OgfRqHLS2hkm5nky1hf",
   })
     .then((paypal) => {
       paypal
-        .Buttons(buttons(cartSubtotal, cartItems))
+        .Buttons(
+          buttons(cartSubtotal, cartItems, orderId, updateStateAfterOrder)
+        )
         .render("#paypal-container-element");
     })
     .catch((err) => {
@@ -27,7 +34,7 @@ const loadPayPalScript = (cartSubtotal, cartItems) => {
     });
 };
 
-const buttons = (cartSubtotal, cartItems) => {
+const buttons = (cartSubtotal, cartItems, orderId, updateStateAfterOrder) => {
   return {
     createOrder: function (data, actions) {
       return actions.order.create({
@@ -64,7 +71,13 @@ const buttons = (cartSubtotal, cartItems) => {
           transaction.status === "COMPLETED" &&
           Number(transaction.amount.value) === Number(cartSubtotal)
         ) {
-          console.log("update order in database");
+          updateOrder(orderId)
+            .then((data) => {
+              if (data.isPaid) {
+                updateStateAfterOrder(data.paidAt);
+              }
+            })
+            .catch((er) => console.log(er));
         }
       });
     },
@@ -76,12 +89,13 @@ const onCancelHandler = function () {
   console.log("cancel");
 };
 
-const onApproveHandler = function () {
-  console.log("onApproveHandler");
-};
-
 const onErrorHandler = function (err) {
   console.log("error");
+};
+
+const updateOrder = async (orderId) => {
+  const { data } = await axios.put("/api/orders/paid/" + orderId);
+  return data;
 };
 
 const UserOrderDetailsPage = () => {
