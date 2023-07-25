@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -33,6 +33,7 @@ const EditProductPageComponent = ({
     message: "",
     error: "",
   });
+  const [attributesFromDb, setAttributesFromDb] = useState([]);
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -73,6 +74,27 @@ const EditProductPageComponent = ({
 
     setValidated(true);
   };
+
+  useEffect(() => {
+    let categoryOfEditedProduct = categories.find(
+      (item) => item.name === product.category
+    );
+    if (categoryOfEditedProduct) {
+      const mainCategoryOfEditedProduct =
+        categoryOfEditedProduct.name.split("/")[0];
+      const mainCategoryOfEditedProductAllData = categories.find(
+        (categoryOfEditedProduct) =>
+          categoryOfEditedProduct.name === mainCategoryOfEditedProduct
+      );
+      if (
+        mainCategoryOfEditedProductAllData &&
+        mainCategoryOfEditedProductAllData.attrs.length > 0
+      ) {
+        setAttributesFromDb(mainCategoryOfEditedProductAllData.attrs);
+      }
+    }
+  }, [product]);
+
   return (
     <Container>
       <Row className="justify-content-md-center mt-5">
@@ -147,34 +169,40 @@ const EditProductPageComponent = ({
               </Form.Select>
             </Form.Group>
 
-            <Row className="mt-5">
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="formBasicAttributes">
-                  <Form.Label>Choose atrribute and set value</Form.Label>
-                  <Form.Select
-                    name="atrrKey"
-                    aria-label="Default select example"
+            {attributesFromDb.length > 0 && (
+              <Row className="mt-5">
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="formBasicAttributes">
+                    <Form.Label>Choose atrribute and set value</Form.Label>
+                    <Form.Select
+                      name="atrrKey"
+                      aria-label="Default select example"
+                    >
+                      <option>Choose attribute</option>
+                      {attributesFromDb.map((item, idx) => (
+                        <Fragment key={idx}>
+                          <option value={item.key}>{item.key}</option>
+                        </Fragment>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="formBasicAttributeValue"
                   >
-                    <option>Choose attribute</option>
-                    <option value="red">color</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="formBasicAttributeValue"
-                >
-                  <Form.Label>Attribute value</Form.Label>
-                  <Form.Select
-                    name="atrrVal"
-                    aria-label="Default select example"
-                  >
-                    <option>Choose attribute value</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
+                    <Form.Label>Attribute value</Form.Label>
+                    <Form.Select
+                      name="atrrVal"
+                      aria-label="Default select example"
+                    >
+                      <option>Choose attribute value</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+            )}
 
             <Row>
               <Table hover>
