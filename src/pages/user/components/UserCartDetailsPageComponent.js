@@ -11,6 +11,8 @@ import CartItemComponent from "../../../components/CartItemComponent";
 
 import { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 const UserCartDetailsPageComponent = ({
   cartItems,
   itemsCount,
@@ -20,11 +22,14 @@ const UserCartDetailsPageComponent = ({
   removeFromCart,
   reduxDispatch,
   getUser,
+  createOrder,
 }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [userAddress, setUserAddress] = useState(false);
   const [missingAddress, setMissingAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("pp");
+
+  const navigate = useNavigate();
 
   const changeCount = (productID, count) => {
     reduxDispatch(addToCart(productID, count));
@@ -68,7 +73,7 @@ const UserCartDetailsPageComponent = ({
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
-  }, [userInfo._id]);
+  }, [userInfo._id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const orderHandler = () => {
     const orderData = {
@@ -88,7 +93,13 @@ const UserCartDetailsPageComponent = ({
       }),
       paymentMethod: paymentMethod,
     };
-    console.log(orderData);
+    createOrder(orderData)
+      .then((data) => {
+        if (data) {
+          navigate("/user/order-details/" + data._id);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const choosePayment = (e) => {
@@ -151,7 +162,7 @@ const UserCartDetailsPageComponent = ({
               <h3>Order summary</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              Items price (after tax):{" "}
+              Items price (after tax):
               <span className="fw-bold">${cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item>
