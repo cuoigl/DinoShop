@@ -4,10 +4,15 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { saveAttributeToCatDoc } from "../../redux/actions/categoryActions";
+import {
+  uploadImagesApiRequest,
+  uploadImagesCloudinaryApiRequest,
+} from "./utils/utils";
 
 const fetchProduct = async (productId) => {
   const { data } = await axios.get(
-    `http://localhost:3000/api/products/get-one/${productId}`,
+    `
+  http://localhost:3000/api/products/get-one/${productId}`,
     { withCredentials: true }
   );
   return data;
@@ -15,26 +20,13 @@ const fetchProduct = async (productId) => {
 
 const updateProductApiRequest = async (productId, formInputs) => {
   const { data } = await axios.put(
-    `http://localhost:3000/api/products/admin/${productId}`,
+    `
+  http://localhost:3000/api/products/admin/${productId}`,
     {
       ...formInputs,
-    },
-    { withCredentials: true }
+    }
   );
   return data;
-};
-
-const uploadHandler = async (images, productId) => {
-  const formData = new FormData();
-
-  Array.from(images).forEach((image) => {
-    formData.append("images", image);
-  });
-  await axios.post(
-    "http://localhost:3000/api/products/admin/upload?productId=" + productId,
-    formData,
-    { withCredentials: true }
-  );
 };
 
 const AdminEditProductPage = () => {
@@ -44,15 +36,17 @@ const AdminEditProductPage = () => {
 
   const imageDeleteHandler = async (imagePath, productId) => {
     let encoded = encodeURIComponent(imagePath);
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV !== "production") {
       // to do: change to !==
       await axios.delete(
-        `http://localhost:3000/api/products/admin/image/${encoded}/${productId}`,
+        `
+      http://localhost:3000/api/products/admin/image/${encoded}/${productId}`,
         { withCredentials: true }
       );
     } else {
       await axios.delete(
-        `http://localhost:3000/api/products/admin/image/${encoded}/${productId}?cloudinary=true`,
+        `
+        http://localhost:3000/api/products/admin/image/${encoded}/${productId}?cloudinary=true`,
         { withCredentials: true }
       );
     }
@@ -66,7 +60,8 @@ const AdminEditProductPage = () => {
       reduxDispatch={reduxDispatch}
       saveAttributeToCatDoc={saveAttributeToCatDoc}
       imageDeleteHandler={imageDeleteHandler}
-      uploadHandler={uploadHandler}
+      uploadImagesApiRequest={uploadImagesApiRequest}
+      uploadImagesCloudinaryApiRequest={uploadImagesCloudinaryApiRequest}
     />
   );
 };

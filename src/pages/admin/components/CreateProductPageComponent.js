@@ -17,7 +17,7 @@ const CreateProductPageComponent = ({
   uploadImagesApiRequest,
   uploadImagesCloudinaryApiRequest,
 }) => {
-  const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState(false); // eslint-disable-next-line
   const [attributesTable, setAttributesTable] = useState([]);
   const [images, setImages] = useState(false);
   const [isCreating, setIsCreating] = useState("");
@@ -41,10 +41,14 @@ const CreateProductPageComponent = ({
       attributesTable: attributesTable,
     };
     if (event.currentTarget.checkValidity() === true) {
+      if (images.length > 3) {
+        setIsCreating("to many files");
+        return;
+      }
       createProductApiRequest(formInputs)
         .then((data) => {
           if (images) {
-            if (process.env.NODE_ENV === "production") {
+            if (process.env.NODE_ENV !== "production") {
               // to do: change to !==
               uploadImagesApiRequest(images, data.productId)
                 .then((res) => {})
@@ -59,14 +63,7 @@ const CreateProductPageComponent = ({
               uploadImagesCloudinaryApiRequest(images, data.productId);
             }
           }
-          return data;
-        })
-        .then((data) => {
-          setIsCreating("Product is being created....");
-          setTimeout(() => {
-            setIsCreating("");
-            if (data.message === "product created") navigate("/admin/products");
-          }, 2000);
+          if (data.message === "product created") navigate("/admin/products");
         })
         .catch((er) => {
           setCreateProductResponseState({
