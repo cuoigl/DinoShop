@@ -24,7 +24,8 @@ const updateProductApiRequest = async (productId, formInputs) => {
   http://localhost:3000/api/products/admin/${productId}`,
     {
       ...formInputs,
-    }
+    },
+    { withCredentials: true }
   );
   return data;
 };
