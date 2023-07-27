@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, Fragment, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { changeCategory } from "./utils/utils";
 
 const onHover = {
   cursor: "pointer",
@@ -80,7 +81,7 @@ const EditProductPageComponent = ({
     fetchProduct(id)
       .then((product) => setProduct(product))
       .catch((er) => console.log(er));
-  }, [id, imageRemoved, imageUploaded]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, imageRemoved, imageUploaded]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -133,20 +134,7 @@ const EditProductPageComponent = ({
     }
     setCategoryChoosen(product.category);
     setAttributesTable(product.attrs);
-  }, [product]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const changeCategory = (e) => {
-    const highLevelCategory = e.target.value.split("/")[0];
-    const highLevelCategoryAllData = categories.find(
-      (cat) => cat.name === highLevelCategory
-    );
-    if (highLevelCategoryAllData && highLevelCategoryAllData.attrs) {
-      setAttributesFromDb(highLevelCategoryAllData.attrs);
-    } else {
-      setAttributesFromDb([]);
-    }
-    setCategoryChoosen(e.target.value);
-  };
+  }, [product]);
 
   const attributeValueSelected = (e) => {
     if (e.target.value !== "Choose attribute value") {
@@ -274,7 +262,14 @@ const EditProductPageComponent = ({
                 required
                 name="category"
                 aria-label="Default select example"
-                onChange={changeCategory}
+                onChange={(e) =>
+                  changeCategory(
+                    e,
+                    categories,
+                    setAttributesFromDb,
+                    setCategoryChoosen
+                  )
+                }
               >
                 <option value="Choose category">Choose category</option>
                 {categories.map((category, idx) => {
