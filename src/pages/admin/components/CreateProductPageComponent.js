@@ -20,7 +20,7 @@ const CreateProductPageComponent = ({
   reduxDispatch,
   newCategory,
 }) => {
-  const [validated, setValidated] = useState(false); // eslint-disable-next-line
+  const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
   const [images, setImages] = useState(false);
   const [isCreating, setIsCreating] = useState("");
@@ -28,6 +28,7 @@ const CreateProductPageComponent = ({
     message: "",
     error: "",
   });
+  const [categoryChoosen, setCategoryChoosen] = useState("Choose category");
 
   const navigate = useNavigate();
 
@@ -87,6 +88,12 @@ const CreateProductPageComponent = ({
   const newCategoryHandler = (e) => {
     if (e.keyCode && e.keyCode === 13 && e.target.value) {
       reduxDispatch(newCategory(e.target.value));
+      setTimeout(() => {
+        let element = document.getElementById("cats");
+        element.value = e.target.value;
+        setCategoryChoosen(e.target.value);
+        e.target.value = "";
+      }, 200);
     }
   };
 
@@ -132,11 +139,12 @@ const CreateProductPageComponent = ({
                 <CloseButton />(<small>remove selected</small>)
               </Form.Label>
               <Form.Select
+                id="cats"
                 required
                 name="category"
                 aria-label="Default select example"
               >
-                <option value="">Choose category</option>
+                <option value="Choose category">Choose category</option>
                 {categories.map((category, idx) => (
                   <option key={idx} value={category.name}>
                     {category.name}
@@ -211,7 +219,7 @@ const CreateProductPageComponent = ({
                 <Form.Group className="mb-3" controlId="formBasicNewAttribute">
                   <Form.Label>Create new attribute</Form.Label>
                   <Form.Control
-                    disabled={false}
+                    disabled={categoryChoosen === "Choose category"}
                     placeholder="first choose or create category"
                     name="newAttrValue"
                     type="text"
@@ -225,7 +233,7 @@ const CreateProductPageComponent = ({
                 >
                   <Form.Label>Attribute value</Form.Label>
                   <Form.Control
-                    disabled={false}
+                    disabled={categoryChoosen === "Choose category"}
                     placeholder="first choose or create category"
                     required={true}
                     name="newAttrValue"
