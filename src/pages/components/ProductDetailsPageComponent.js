@@ -33,19 +33,22 @@ const ProductDetailsPageComponent = ({
     setShowCartMessage(true);
   };
 
-  var options = {
-    // width: 400,
-    // zoomWidth: 500,
-    // fillContainer: true,
-    // zoomPosition: "bottom",
-    scale: 2,
-    offset: { vertical: 0, horizontal: 0 },
-  };
   useEffect(() => {
-    new ImageZoom(document.getElementById("first"), options);
-    new ImageZoom(document.getElementById("second"), options);
-    new ImageZoom(document.getElementById("third"), options);
-    new ImageZoom(document.getElementById("fourth"), options);
+    if (product.images) {
+      var options = {
+        // width: 400,
+        // zoomWidth: 500,
+        // fillContainer: true,
+        // zoomPosition: "bottom",
+        scale: 2,
+        offset: { vertical: 0, horizontal: 0 },
+      };
+
+      product.images.map(
+        (image, id) =>
+          new ImageZoom(document.getElementById(`imageId${id + 1}`), options)
+      );
+    }
   });
 
   useEffect(() => {
@@ -75,26 +78,20 @@ const ProductDetailsPageComponent = ({
         ) : (
           <>
             <Col style={{ zIndex: 1 }} md={4}>
-              <div id="first">
-                <Image
-                  crossOrigin="anonymous"
-                  fluid
-                  src="/images/games-category.png"
-                />
-              </div>
-              <br />
-              <div id="second">
-                <Image fluid src="/images/monitors-category.png" />
-              </div>
-              <br />
-              <div id="third">
-                <Image fluid src="/images/tablets-category.png" />
-              </div>
-              <br />
-              <div id="fourth">
-                <Image fluid src="/images/games-category.png" />
-              </div>
-              <br />
+              {product.images
+                ? product.images.map((image, id) => (
+                    <div key={id}>
+                      <div key={id} id={`imageId${id + 1}`}>
+                        <Image
+                          crossOrigin="anonymous"
+                          fluid
+                          src={`${image.path ?? null}`}
+                        />
+                      </div>
+                      <br />
+                    </div>
+                  ))
+                : null}
             </Col>
             <Col md={8}>
               <Row>
