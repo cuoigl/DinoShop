@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import {
   newCategory,
   deleteCategory,
+  saveAttributeToCatDoc,
 } from "../../redux/actions/categoryActions";
 import { useDispatch } from "react-redux";
 
@@ -33,6 +34,7 @@ const AdminCreateProductPage = () => {
       reduxDispatch={dispatch}
       newCategory={newCategory}
       deleteCategory={deleteCategory}
+      saveAttributeToCatDoc={saveAttributeToCatDoc}
     />
   );
 };
