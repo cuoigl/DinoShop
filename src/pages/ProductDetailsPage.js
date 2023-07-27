@@ -1,8 +1,17 @@
 import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
+import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 
 import { addToCart } from "../redux/actions/cartActions";
+import axios from "axios";
+
+const getProductDetails = async (id) => {
+  const { data } = await axios.get(
+    `http://localhost:3000/api/products/get-one/${id}`
+  );
+  return data;
+};
 
 const ProductDetailsPage = () => {
   const dispatch = useDispatch();
@@ -11,6 +20,7 @@ const ProductDetailsPage = () => {
     <ProductDetailsPageComponent
       addToCartReduxAction={addToCart}
       reduxDispatch={dispatch}
+      getProductDetails={getProductDetails}
     />
   );
 };
