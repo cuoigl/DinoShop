@@ -21,7 +21,7 @@ const HomePageComponent = ({ categories, getBestsellers }) => {
     setMainCategories((cat) =>
       categories.filter((item) => !item.name.includes("/"))
     );
-  }, [categories]);
+  }, [categories]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

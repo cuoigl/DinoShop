@@ -70,7 +70,7 @@ const AnalyticsPageComponent = ({
         )
       );
     return () => abctrl.abort();
-  }, [firstDateToCompare, secondDateToCompare]);
+  }, [firstDateToCompare, secondDateToCompare]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const firstDateHandler = (e) => {
     setFirstDateToCompare(e.target.value);

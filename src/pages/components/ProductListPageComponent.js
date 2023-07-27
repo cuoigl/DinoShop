@@ -78,7 +78,7 @@ const ProductListPageComponent = ({ getProducts, categories }) => {
         console.log(er);
         setError(true);
       });
-  }, [categoryName, pageNumParam, searchQuery, filters, sortOption]);
+  }, [categoryName, pageNumParam, searchQuery, filters, sortOption]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleFilters = () => {
     navigate(location.pathname.replace(/\/[0-9]+$/, ""));

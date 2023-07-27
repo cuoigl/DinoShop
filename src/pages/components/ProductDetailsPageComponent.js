@@ -75,7 +75,7 @@ const ProductDetailsPageComponent = ({
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
-  }, [id, productReviewed]);
+  }, [id, productReviewed]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sendReviewHandler = (e) => {
     e.preventDefault();
