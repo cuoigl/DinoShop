@@ -30,3 +30,7 @@ export const saveAttributeToCatDoc =
       });
     }
   };
+
+export const newCategory = (category) => async (dispatch, getState) => {
+  console.log(category);
+};
