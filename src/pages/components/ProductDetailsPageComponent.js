@@ -21,6 +21,7 @@ const ProductDetailsPageComponent = ({
   reduxDispatch,
   getProductDetails,
   userInfo,
+  writeReviewApiRequest,
 }) => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
@@ -64,7 +65,7 @@ const ProductDetailsPageComponent = ({
           er.response.data.message ? er.response.data.message : er.response.data
         )
       );
-  }, []);
+  }, [id, productReviewed]);
 
   const sendReviewHandler = (e) => {
     e.preventDefault();
@@ -74,7 +75,19 @@ const ProductDetailsPageComponent = ({
       rating: form.rating.value,
     };
     if (e.currentTarget.checkValidity() === true) {
-      console.log(product._id, formInputs);
+      writeReviewApiRequest(product._id, formInputs)
+        .then((data) => {
+          if (data === "review created") {
+            setProductReviewed("You successfuly reviewed the page!");
+          }
+        })
+        .catch((er) =>
+          setProductReviewed(
+            er.response.data.message
+              ? er.response.data.message
+              : er.response.data
+          )
+        );
     }
   };
 

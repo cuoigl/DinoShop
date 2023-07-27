@@ -13,6 +13,17 @@ const getProductDetails = async (id) => {
   return data;
 };
 
+const writeReviewApiRequest = async (productId, formInputs) => {
+  const { data } = await axios.post(
+    `http://localhost:3000/api/users/review/${productId}`,
+    {
+      ...formInputs,
+    },
+    { withCredentials: true }
+  );
+  return data;
+};
+
 const ProductDetailsPage = () => {
   const dispatch = useDispatch();
 
@@ -24,6 +35,7 @@ const ProductDetailsPage = () => {
       reduxDispatch={dispatch}
       getProductDetails={getProductDetails}
       userInfo={userInfo}
+      writeReviewApiRequest={writeReviewApiRequest}
     />
   );
 };
