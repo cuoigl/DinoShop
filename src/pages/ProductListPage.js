@@ -3,10 +3,14 @@ import axios from "axios";
 
 import { useSelector } from "react-redux";
 
-const getProducts = async () => {
-  const { data } = await axios.get("http://localhost:3000/api/products", {
-    withCredentials: true,
-  });
+const getProducts = async (
+  categoryName = "",
+  pageNumParam = null,
+  searchQuery = "",
+  filters = {},
+  sortOption = ""
+) => {
+  const { data } = await axios.get("http://localhost:3000/api/products");
   return data;
 };
 
