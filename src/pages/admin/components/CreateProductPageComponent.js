@@ -9,9 +9,13 @@ import {
   Alert,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { changeCategory } from "./utils/utils";
+import {
+  changeCategory,
+  setValuesForAttrFromDbSelectForm,
+  setAttributesTableWrapper,
+} from "./utils/utils";
 
 const CreateProductPageComponent = ({
   createProductApiRequest,
@@ -32,6 +36,9 @@ const CreateProductPageComponent = ({
     error: "",
   });
   const [categoryChoosen, setCategoryChoosen] = useState("Choose category");
+
+  const attrVal = useRef(null);
+  const attrKey = useRef(null);
 
   const navigate = useNavigate();
 
@@ -93,8 +100,8 @@ const CreateProductPageComponent = ({
       reduxDispatch(newCategory(e.target.value));
       setTimeout(() => {
         let element = document.getElementById("cats");
-        element.value = e.target.value;
         setCategoryChoosen(e.target.value);
+        element.value = e.target.value;
         e.target.value = "";
       }, 200);
     }
@@ -104,6 +111,16 @@ const CreateProductPageComponent = ({
     let element = document.getElementById("cats");
     reduxDispatch(deleteCategory(element.value));
     setCategoryChoosen("Choose category");
+  };
+
+  const attributeValueSelected = (e) => {
+    if (e.target.value !== "Choose attribute value") {
+      setAttributesTableWrapper(
+        attrKey.current.value,
+        e.target.value,
+        setAttributesTable
+      );
+    }
   };
 
   return (
@@ -190,6 +207,14 @@ const CreateProductPageComponent = ({
                     <Form.Select
                       name="atrrKey"
                       aria-label="Default select example"
+                      ref={attrKey}
+                      onChange={(e) =>
+                        setValuesForAttrFromDbSelectForm(
+                          e,
+                          attrVal,
+                          attributesFromDb
+                        )
+                      }
                     >
                       <option>Choose attribute</option>
                       {attributesFromDb.map((item, idx) => (
@@ -207,8 +232,10 @@ const CreateProductPageComponent = ({
                   >
                     <Form.Label>Attribute value</Form.Label>
                     <Form.Select
+                      onChange={attributeValueSelected}
                       name="atrrVal"
                       aria-label="Default select example"
+                      ref={attrVal}
                     >
                       <option>Choose attribute value</option>
                     </Form.Select>
