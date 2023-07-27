@@ -39,7 +39,7 @@ const LoginPageComponent = ({
           }
 
           if (res.success === "user logged in" && !res.userLoggedIn.isAdmin)
-            window.location.assign("/user");
+            window.location.assign("/");
           else window.location.assign("/admin/orders");
         })
         .catch((er) =>
